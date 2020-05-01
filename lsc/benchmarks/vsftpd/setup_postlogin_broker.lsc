@@ -1,0 +1,3 @@
+seccomp_sandbox_setup_base();
+  seccomp_sandbox_setup_data_connections();
+  allow_nr_1_arg_match(__NR_sendmsg, 3, 0);

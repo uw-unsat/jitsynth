@@ -1,0 +1,19 @@
+allow_nr_3_arg_match(__NR_socket, 1, PF_INET, 2, SOCK_STREAM, 3, IPPROTO_TCP);
+allow_nr_3_arg_match(__NR_socket,
+                     1, PF_INET6,
+                     2, SOCK_STREAM,
+                     3, IPPROTO_TCP);
+allow_nr(__NR_bind);
+allow_nr(__NR_select);
+
+// if (tunable_port_enable)
+  allow_nr(__NR_connect);
+  allow_nr_2_arg_match(__NR_getsockopt, 2, SOL_SOCKET, 3, SO_ERROR);
+  allow_nr_2_arg_match(__NR_setsockopt, 2, SOL_SOCKET, 3, SO_REUSEADDR);
+  allow_nr_1_arg_match(__NR_fcntl, 2, F_GETFL);
+  allow_nr_2_arg_match(__NR_fcntl, 2, F_SETFL, 3, O_RDWR|O_NONBLOCK);
+  allow_nr_2_arg_match(__NR_fcntl, 2, F_SETFL, 3, O_RDWR);
+
+// if (tunable_pasv_enable)
+  allow_nr(__NR_listen);
+  allow_nr(__NR_accept);

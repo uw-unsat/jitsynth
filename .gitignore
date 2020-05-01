@@ -1,0 +1,16 @@
+*~
+*compiled*
+*.swp
+*.o
+synth-progs*
+log
+*temp*
+*/build/*
+*.DS_Store
+*/rwset-cache
+*/*cchh*
+test/rv64ui/*.S
+*.out
+*.olean
+proofs/_target
+proofs/leanpkg.path

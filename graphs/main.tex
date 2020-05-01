@@ -1,0 +1,156 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\newcommand{\sketch}{S}
+
+\usepackage[normalem]{ulem}
+
+% PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Some recommended packages.
+\usepackage{booktabs}   %% For formal tables:
+                        %% http://ctan.org/pkg/booktabs
+%\usepackage{subcaption} %% For complex figures with subfigures/subcaptions
+                        %% http://ctan.org/pkg/subcaption
+
+
+\usepackage{courier}            % standard fixed width font
+%\usepackage[scaled]{helvet} % see www.ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
+\usepackage{listings}          % format code
+\usepackage{enumitem}      % adjust spacing in enums
+\usepackage{algorithm,algorithmicx}
+% \usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{comment}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{bbm, dsfont}
+\usepackage{mathrsfs}
+\usepackage{xcolor}
+\usepackage{esvect}
+\usepackage{xspace}
+\usepackage{array, multirow} % multirow in table
+\usepackage{rotating, makecell} % cell rotation
+\usepackage[noend]{algpseudocode}
+\usepackage{balance}
+\usepackage{qtree}
+%\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{multirow}
+\usepackage{fancyvrb}
+\usepackage{pgfplots}
+% \pgfplotsset{compat=1.16}
+\usepackage{stmaryrd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5%%%%%%%%%%
+
+\def\sectionautorefname{Section}
+\def\subsectionautorefname{Section}
+\def\subsubsectionautorefname{Section}
+% COMMANDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\toolname}{{\sc JitSynth}\xspace}
+\newcommand{\jitsynth}{{\sc JitSynth}\xspace}
+\newcommand{\jitk}{{\sc Jitk}\xspace}
+% \newcommand{\pctslowdown}{$N$}
+
+\newcommand{\mathword}[1]{\ensuremath{#1}\xspace}
+\newcommand{\mathid}[1]{\mathword{\mathit{#1}}}
+\newcommand{\imm}{\mathid{imm}}
+\newcommand{\sign}{\mathid{sign}}
+\newcommand{\pc}{\mathid{pc}}
+\newcommand{\regs}{\mathid{reg}}
+\newcommand{\mem}{\mathid{mem}}
+\newcommand{\rd}{\mathid{rd}}
+\newcommand{\rs}{\mathid{rs}}
+\newcommand{\dst}{\mathid{dst}}
+\newcommand{\src}{\mathid{src}}
+\newcommand{\off}{\mathid{off}}
+\newcommand{\pid}{\mathid{pid}}
+\newcommand{\tvar}[1]{\makebox[.9em][r]{$#1$}}
+\newcommand{\local}{\mathid{op}}
+\newcommand{\concat}{\oplus}
+\newcommand{\reg}[1]{R[#1]}
+\DeclareMathOperator{\extractop}{extract}
+\newcommand{\extract}[3]{\extractop(#1, #2, #3)}
+\DeclareMathOperator{\sexti}{sext32}
+\DeclareMathOperator{\sextll}{sext64}
+\newcommand{\arm}{\mathcal{A}}
+
+\newcommand{\Reg}{\mathid{Reg}}
+\newcommand{\Mem}{\mathid{Mem}}
+\newcommand{\PC}{\mathid{PC}}
+\newcommand{\BV}[1]{\ensuremath{\mathid{BV}(#1)}}
+\newcommand{\tfun}{\ensuremath{\mathcal{T}}\xspace}
+\newcommand{\prog}[1]{\ensuremath{P(#1)}}
+\newcommand{\denotes}[1]{\ensuremath{\llbracket #1 \rrbracket}}
+\newcommand{\host}{\mathword{\mathcal{H}}}
+\newcommand{\size}[1]{\ensuremath{|#1|}}
+
+\newcommand{\cc}[1]{\texttt{#1}}
+
+\newcommand{\todo}[1]{\textbf{\color{red} #1}}
+
+\newcommand{\tighten}{\looseness=-1}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\CMS}{\textproc{CMS}\xspace}
+\newcommand{\Naive}{\textproc{Naive}\xspace}
+\newcommand{\RW}{\textproc{RW}\xspace}
+\newcommand{\LCS}{\textproc{PLD}\xspace}
+
+\newcommand{\Read}[1]{\mathid{Read}(#1)}
+\newcommand{\Write}[1]{\mathid{Write}(#1)}
+\newcommand{\Get}[2]{#1(#2)}
+\newcommand{\Map}[1][]{\mathword{\mathcal{M}_{#1}}}
+
+% terminology  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\minicompiler}{mini compiler\xspace}
+\newcommand{\Minicompiler}{Mini compiler\xspace}
+\newcommand{\MiniCompiler}{Mini Compiler\xspace}
+\newcommand{\minicompilers}{mini compilers\xspace}
+\newcommand{\Minicompilers}{Mini compilers\xspace}
+\newcommand{\MiniCompilers}{Mini Compilers\xspace}
+
+
+% LANGUAGE DEF %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{
+  columns=flexible,
+  keepspaces,
+  xleftmargin=1em,
+  basicstyle=\ttfamily,
+  keywordstyle=\color{green!60!black}\bfseries,
+  keywordstyle=[2]\color{green!60!black}\bfseries,
+  keywordstyle=[3]\color{blue!60!black}\bfseries,
+  stringstyle=\color{red},
+  commentstyle=\color{orange!70!black},
+  % procnamestyle=\color{blue},
+  basicstyle=\small\ttfamily,
+  lineskip=-1em,
+}
+
+\lstdefinelanguage{rosette}{
+  morekeywords=[1]{verify,solve,forall,and,or,assert,s-exp,rosette,set!,begin,define,define-match,define-values,define-syntax,define-syntax-rule,syntax-rules,let,let*,if,when,unless,match-define,lambda,provide,cond,case,else,struct,letrec,for/list,true,false,null,local,require,rename-in,??,define-symbolic,define-symbolic*,not,=>,ite,\#lang,\#:transparent,\#:mutable,equal?,match,list},
+  morekeywords=[2]{bv,bvult,bvuge,bvsub,~>,bitvector,integer?},
+  morekeywords=[3]{serval:split-pc,serval:bug-on},
+  alsoletter={\#,:,?,-,=>,*},
+  morecomment=[l]{;},
+}
+
+\lstdefinelanguage{c}{
+  morekeywords=[1]{struct,switch,case,sizeof,return,break},
+  morekeywords=[2]{...},
+}
+
+\lstdefinelanguage{sketch}{
+  morekeywords=[1]{struct,switch,case,sizeof,return,break},
+}
+
+\renewcommand{\algorithmiccomment}[1]{\hfill\textcolor{orange!70!black}{$\triangleright$ #1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\resizebox{\textwidth}{!}{\input{o2b-cc.pgf}}
+\resizebox{\textwidth}{!}{\input{l2b-cc.pgf}}
+
+
+\end{document}

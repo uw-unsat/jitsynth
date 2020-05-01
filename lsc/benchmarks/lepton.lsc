@@ -1,0 +1,14 @@
+RULE ALLOW rt_sigreturn
+RULE ALLOW sigreturn
+RULE ALLOW madvise
+RULE ALLOW mmap
+RULE ALLOW brk
+RULE ALLOW munmap
+RULE ALLOW mprotect
+RULE ALLOW mremap
+RULE ALLOW futex
+RULE ALLOW mmap2
+RULE ALLOW exit
+RULE ALLOW read
+RULE ALLOW write
+DEFAULT KILL

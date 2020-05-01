@@ -1,0 +1,21 @@
+/* Simple reads and writes on existing descriptors. */
+  allow_nr(__NR_read);
+  allow_nr(__NR_write);
+
+  /* Needed for memory management. */
+  allow_nr_2_arg_match(__NR_mmap,
+                       3, PROT_READ|PROT_WRITE,
+                       4, MAP_PRIVATE|MAP_ANON);
+  allow_nr_1_arg_mask(__NR_mprotect, 3, PROT_READ);
+  allow_nr(__NR_munmap);
+  allow_nr(__NR_brk);
+  /* glibc falls back gracefully if mremap() fails during realloc(). */
+  reject_nr(__NR_mremap, ENOSYS);
+
+  /* Misc simple low-risk calls. */
+  allow_nr(__NR_rt_sigreturn); /* Used to handle SIGPIPE. */
+  allow_nr(__NR_restart_syscall);
+  allow_nr(__NR_close);
+
+  /* Always need to be able to exit ! */
+  allow_nr(__NR_exit_group);

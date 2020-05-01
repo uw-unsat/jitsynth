@@ -1,0 +1,11 @@
+benchmark,compiler,instructions
+ctags,seccomp,11
+lepton,seccomp,18
+libreoffice,seccomp,97
+openssh,seccomp,59
+vsftpd,seccomp,7
+ctags,jitsynth,27
+lepton,jitsynth,62
+libreoffice,jitsynth,308
+openssh,jitsynth,175
+vsftpd,jitsynth,7

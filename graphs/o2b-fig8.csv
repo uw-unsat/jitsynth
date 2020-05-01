@@ -1,0 +1,15 @@
+benchmark,compiler,instructions
+chrome,linux,17
+firefox,linux,14
+nacl,linux,14
+openssh,linux,15
+qemu,linux,17
+tor,linux,10
+vsftpd,linux,10
+chrome,jitsynth,44
+firefox,jitsynth,32
+nacl,jitsynth,32
+openssh,jitsynth,35
+qemu,jitsynth,42
+tor,jitsynth,20
+vsftpd,jitsynth,20

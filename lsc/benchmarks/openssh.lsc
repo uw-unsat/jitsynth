@@ -1,0 +1,50 @@
+RULE DENY lstat
+RULE DENY lstat64
+RULE DENY fstat
+RULE DENY fstat64
+RULE DENY open
+RULE DENY openat
+RULE DENY newfstatat
+RULE DENY stat
+RULE DENY stat64
+RULE DENY shmget
+RULE DENY shmat
+RULE DENY shmdt
+RULE ALLOW brk
+RULE ALLOW clock_gettime
+RULE ALLOW close
+RULE ALLOW exit
+RULE ALLOW exit_group
+RULE ALLOW futex
+RULE ALLOW geteuid
+RULE ALLOW geteuid32
+RULE ALLOW getpgid
+RULE ALLOW getpid
+RULE ALLOW getrandom
+RULE ALLOW gettimeofday
+RULE ALLOW getuid
+RULE ALLOW getuid32
+RULE ALLOW madvise
+ARG 2 eq READ_WRITE_NONE
+RULE ALLOW mremap
+RULE ALLOW munmap
+RULE ALLOW nanosleep
+RULE ALLOW _newselect
+RULE ALLOW poll
+RULE ALLOW pselect6
+RULE ALLOW read
+RULE ALLOW rt_sigprocmask
+RULE ALLOW select
+RULE ALLOW shutdown
+RULE ALLOW sigprocmask
+RULE ALLOW time
+RULE ALLOW write
+ARG 0 eq SYS_SHUTDOWN
+RULE DENY socketcall
+ARG 1 eq Z90STAT_STATUS_MASK
+ARG 1 eq ICARSAMODEXPO
+ARG 1 eq ICARSACRT
+ARG 1 eq ZSECSENDCPRB
+ARG 1 eq ZSENDEP11CPRB
+RULE ALLOW clock_gettime
+DEFAULT DENY

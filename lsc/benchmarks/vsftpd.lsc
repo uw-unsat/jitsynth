@@ -1,0 +1,20 @@
+RULE ALLOW read
+RULE ALLOW write
+ARG 2 eq READ_WRITE
+ARG 1 eq READ
+RULE ALLOW munmap
+RULE ALLOW brk
+RULE DENY mremap
+RULE ALLOW rt_sigreturn
+RULE ALLOW restart_syscall
+RULE ALLOW close
+RULE ALLOW exit_group
+ARG 3 eq PF_INET
+RULE ALLOW bind
+RULE ALLOW select
+RULE ALLOW connect
+ARG 2 eq SOL_SOCKET
+ARG 1 eq F_GETFL
+RULE ALLOW listen
+RULE ALLOW accept
+DEFAULT KILL

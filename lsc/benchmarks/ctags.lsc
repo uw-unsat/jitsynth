@@ -1,0 +1,14 @@
+RULE ALLOW mmap
+RULE ALLOW munmap
+RULE ALLOW mremap
+RULE ALLOW brk
+RULE ALLOW read
+RULE ALLOW write
+RULE ALLOW exit
+RULE ALLOW exit_group
+RULE ALLOW fstat
+RULE ALLOW fstat64
+RULE ALLOW lseek
+RULE ALLOW _llseek
+RULE ALLOW futex
+DEFAULT KILL

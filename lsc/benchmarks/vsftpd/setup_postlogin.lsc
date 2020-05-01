@@ -1,0 +1,67 @@
+/* Put lstat() first because it is a very hot syscall for large directory
+   * listings. And the current BPF only allows a linear scan of allowed
+   * syscalls.
+   */
+  allow_nr(__NR_lstat);
+
+  /* Allow all the simple pre-login things and then expand upon them. */
+  seccomp_sandbox_setup_prelogin(p_sess);
+
+  /* Simple file descriptor-based operations. */
+    allow_nr_1_arg_match(__NR_fcntl, 2, F_SETLKW);
+    allow_nr_1_arg_match(__NR_fcntl, 2, F_SETLK);
+
+    allow_nr_2_arg_match(__NR_fcntl, 2, F_SETOWN, 3, vsf_sysutil_getpid());
+  allow_nr_2_arg_match(__NR_setsockopt, 2, SOL_SOCKET, 3, SO_KEEPALIVE);
+  allow_nr_2_arg_match(__NR_setsockopt, 2, SOL_SOCKET, 3, SO_LINGER);
+  allow_nr_2_arg_match(__NR_setsockopt, 2, IPPROTO_IP, 3, IP_TOS);
+  allow_nr(__NR_fstat);
+  allow_nr(__NR_lseek);
+  /* Since we use chroot() to restrict filesystem access, we can just blanket
+   * allow open().
+   */
+  allow_nr_1_arg_mask(__NR_open, 2, open_flag);
+  allow_nr_1_arg_mask(__NR_openat, 3, open_flag);
+  /* Other pathname-based metadata queries. */
+  allow_nr(__NR_stat);
+  allow_nr(__NR_readlink);
+  /* Directory handling: query, change, read. */
+  allow_nr(__NR_getcwd);
+  allow_nr(__NR_chdir);
+  allow_nr(__NR_getdents);
+  /* Misc */
+  allow_nr(__NR_umask);
+
+  /* Config-dependent items follow. */
+    allow_nr(__NR_sendfile);
+
+    allow_nr(__NR_rt_sigaction);
+
+    allow_nr(__NR_alarm);
+
+    seccomp_sandbox_setup_data_connections();
+
+      allow_nr(__NR_fchmod);
+      allow_nr(__NR_fchown);
+
+    /* Need to receieve file descriptors from privileged broker. */
+    allow_nr_1_arg_match(__NR_recvmsg, 3, 0);
+
+      /* Need to send file descriptors to privileged broker. */
+      allow_nr_1_arg_match(__NR_sendmsg, 3, 0);
+
+    reject_nr(__NR_socket, EACCES);
+    allow_nr_2_arg_match(__NR_mmap, 3, PROT_READ, 4, MAP_SHARED);
+
+      allow_nr(__NR_mkdir);
+
+      allow_nr(__NR_unlink);
+
+      allow_nr(__NR_rmdir);
+      allow_nr(__NR_rename);
+      allow_nr(__NR_ftruncate);
+
+        allow_nr(__NR_utime);
+        allow_nr(__NR_utimes);
+
+      allow_nr(__NR_chmod);
